@@ -23,7 +23,7 @@ async function createConnection() {
 const client =await createConnection();
 
 app.get("/", function (req, res) {
-  res.send("Hello kollywood movies");
+  res.send("Hello movies");
 });
 
 app.get("/movies", async function (req, res) {
