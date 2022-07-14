@@ -22,54 +22,19 @@ async function createConnection() {
 //TOP LEVEL AWAIT
 const client =await createConnection();
 
-app.get("/", function (req, res) {
-  res.send("Hello movies");
-});
 
-app.get("/movies", async function (req, res) {
-  //db.movies.find({})
-  //Cursor-pagination
-  //toArray - Cursor->Array
+
+app.get("/products", async function (req, res) {
+
   const movies = await client
-    .db("b33wd")
-    .collection("movies")
+    .db("products")
+    .collection("items")
     .find({})
     .toArray();
   res.send(movies);
 });
 
-app.get("/movies:id", async function (req, res) {
-  console.log(req.params);
-  const { id } = req.params;
-  //db.movies.findOne({id:id})
-  const movie = await client
-    .db("b33wd")
-    .collection("movies")
-    .findOne({ id: id });
 
-  // const movie = movies.find((mv) => mv.id === id);
-  movie
-    ? res.send(movie)
-    : res.status(404).send({ msg: "no such movie found" });
-});
-
-app.delete("/movies:id", async function (req, res) {
-  console.log(req.params);
-  const { id } = req.params;
-  //db.movies.findOne({id:id})
-  const movie = await client
-    .db("b33wd")
-    .collection("movies")
-    .deleteOne({ id: id });
-
-  // const movie = movies.find((mv) => mv.id === id);
-  movie.deletedCount>0
-    ? res.send(movie)
-    : res.status(404).send({ msg: "no such movie found" });
-});
-
-//express.json()-> converting to json
-//inbuil-middleware
 app.post("/movies", async function (req, res) {
   const data = req.body;
   console.log(data);
@@ -79,15 +44,5 @@ app.post("/movies", async function (req, res) {
 });
 
 
-app.put("/movies/:id", async function (req, res) {
-  const data = req.body;
-  console.log(data);
-  const { id } = req.params;
-  //db.movies.updatetOne({id:id},{$set:data})
-  
-  const result = await client.db("b33wd").collection("movies").updateOne({ id: id },{$set: data });
-  res.send(result);
-  console.log("one")
-});
 
 app.listen(PORT, () => console.log(`App started in ${PORT}`));
